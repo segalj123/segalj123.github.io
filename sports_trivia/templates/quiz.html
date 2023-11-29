@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Trivia Quiz</title>
+
+    <style>
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+        }
+
+        button {
+            background-color: #19747E; /* Deep Teal */
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sports Trivia Quiz</h1>
+    <form action="{{ url_for('quiz') }}" method="POST">
+        <label for="question_category">Select a category or choose 'Random':</label>
+        <select name="question_category" id="question_category">
+            <option value="rushing_yards">Rushing Yards</option>
+            <option value="interceptions">Interceptions</option>
+            <!-- Add options for other categories -->
+            <option value="random">Random</option>
+        </select>
+
+        <h2>Question</h2>
+        <label for="user_answer">Answer the question:</label>
+        <input type="text" name="user_answer" required>
+
+        <button type="submit">Submit</button>
+
+        
+    <h2>Question 1:</h2>
+    <p>Who is the current leader in passing yards in the NFL?</p>
+
+    <form id="quiz-form" action="{{ url_for('quiz') }}" method="POST">
+        <label for="answer">Your Answer:</label>
+        <input type="text" name="answer" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
