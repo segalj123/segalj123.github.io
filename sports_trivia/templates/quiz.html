@@ -34,22 +34,6 @@
 </head>
 <body>
     <h1>Sports Trivia Quiz</h1>
-    <form action="{{ url_for('quiz') }}" method="POST">
-        <label for="question_category">Select a category or choose 'Random':</label>
-        <select name="question_category" id="question_category">
-            <option value="rushing_yards">Rushing Yards</option>
-            <option value="interceptions">Interceptions</option>
-            <!-- Add options for other categories -->
-            <option value="random">Random</option>
-        </select>
-
-        <h2>Question</h2>
-        <label for="user_answer">Answer the question:</label>
-        <input type="text" name="user_answer" required>
-
-        <button type="submit">Submit</button>
-
-        
     <h2>Question 1:</h2>
     <p>Who is the current leader in passing yards in the NFL?</p>
 

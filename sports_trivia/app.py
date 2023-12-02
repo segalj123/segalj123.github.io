@@ -1,5 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import os
+import random
 
 app = Flask('SportsTrivia', template_folder=os.path.abspath('templates'))
 
@@ -36,10 +37,10 @@ def quiz():
 def home():
     return render_template('index.html')
 
-@app.route('/quiz')
-def quiz():
-    print("Trying to render quiz.html")
-    return render_template('quiz.html')
+# @app.route('/quiz')
+# def quiz():
+#     print("Trying to render quiz.html")
+#     return render_template('quiz.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
