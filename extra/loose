@@ -1,0 +1,26 @@
+from flask import Flask, render_template, request, redirect, url_for
+import requests
+import random
+import os
+
+app = Flask('SportsTrivia', template_folder=os.path.abspath('templates'))
+app.secret_key = os.urandom(24)
+
+# Replace this with the actual API endpoint
+api_endpoint = 'https://nfl-team-stats1.p.rapidapi.com/teamStats'
+
+# Your RapidAPI key
+rapidapi_key = '98974bde8cmsh962a803693b7adep17fe22jsn5c7438dbfc41'
+
+
+team_names = ['Arizona Cardinals', 'Atlanta Falcons', 'Baltimore Ravens', 'Buffalo Bills', 'Carolina Panthers', 'Chicago Bears', 'Cincinnati Bengals', 'Cleveland Browns', 'Dallas Cowboys', 'Denver Broncos', 'Detroit Lions', 'Green Bay Packers', 'Houston Texans', 'Indianapolis Colts', 'Jacksonville Jaguars', 'Kansas City Chiefs', 'Las Vegas Raiders', 'Los Angeles Chargers', 'Los Angeles Rams', 'Miami Dolphins', 'Minnesota Vikings', 'New England Patriots', 'New Orleans Saints', 'New York Giants', 'New York Jets', 'Philadelphia Eagles', 'Pittsburgh Steelers', 'San Francisco 49ers', 'Seattle Seahawks', 'Tampa Bay Buccaneers', 'Tennessee Titans', 'Washington Football Team']
+
+for team_name in team_names:
+    team_stats_line = f"{team_name.replace(' ', '_')}_stats = team_stats.get('{team_name}', {{}})"
+    print(team_stats_line)
+
+    dolphins_stats = team_stats.get('stats', {}).get('Miami Dolphins', {})
+    {dolphins_stats['Scoring']['Pts']}
+
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -1,0 +1,100 @@
+from flask import Flask, render_template, request, redirect, url_for
+import requests
+import random
+import os
+
+app = Flask('SportsTrivia', template_folder=os.path.abspath('templates'))
+app.secret_key = os.urandom(24)
+
+# Replace this with the actual API endpoint
+api_endpoint = 'https://nfl-team-stats1.p.rapidapi.com/teamStats'
+
+# Your RapidAPI key
+rapidapi_key = '98974bde8cmsh962a803693b7adep17fe22jsn5c7438dbfc41'
+
+# Function to find the top team in each category
+def find_top_teams(team_stats):
+    top_teams = {}
+
+    for category in team_stats.get('categories', []):
+        if 'topTeam' in category:
+            team_info = category['topTeam']
+            team_name = team_info['team']
+            value = team_info['value']
+            top_teams[category['name']] = (team_name, value)
+
+    return top_teams
+
+# Function to generate quiz questions based on team statistics
+def generate_quiz_questions(team_stats):
+    dolphins_stats = team_stats.get('stats', {}).get('Miami Dolphins', {})
+    quiz_questions = []
+
+    # Scoring Offense
+    question = f"Which NFL team leads in scoring offense? (Miami Dolphins have scored {dolphins_stats['Scoring']['Pts']} points)"
+    quiz_questions.append(question)
+
+    # Scoring Defense Per Game
+    question = f"Which NFL team has the best defense in terms of points allowed per game? (Miami Dolphins allow {dolphins_stats['Scoring Defense Per Game']['Pts/G']} points per game)"
+    quiz_questions.append(question)
+
+    # Passing Offense
+    question = f"Which NFL team leads in passing offense? (Miami Dolphins have passed for {dolphins_stats['Passing Offense']['Yds']} yards)"
+    quiz_questions.append(question)
+
+    # Rushing Offense
+    question = f"Which NFL team leads in rushing offense? (Miami Dolphins have rushed for {dolphins_stats['Rushing Offense']['Yds']} yards)"
+    quiz_questions.append(question)
+
+    # Passing Defense
+    question = f"Which NFL team has the best passing defense? (Miami Dolphins have allowed {dolphins_stats['Passing Defense']['Yds']} passing yards)"
+    quiz_questions.append(question)
+
+    # Rushing Defense
+    question = f"Which NFL team has the best rushing defense? (Miami Dolphins have allowed {dolphins_stats['Rushing Defense']['Yds']} rushing yards)"
+    quiz_questions.append(question)
+
+    # Add more questions based on other statistics as needed
+
+    return quiz_questions
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/quiz')
+def quiz():
+    try:
+        headers = {
+            'X-RapidAPI-Key': rapidapi_key,
+            'X-RapidAPI-Host': 'nfl-team-stats1.p.rapidapi.com'
+        }
+        response = requests.get(api_endpoint, headers=headers)
+
+        if response.status_code == 200:
+            team_stats = response.json()
+
+            # Find the top team in each category
+            top_teams = find_top_teams(team_stats)
+
+            # Generate quiz questions based on team statistics
+            quiz_questions = generate_quiz_questions(team_stats)
+
+            # Pass the quiz questions and top teams to the template
+            return render_template('quiz.html', quiz_questions=quiz_questions, top_teams=top_teams)
+        else:
+            return render_template('error.html', error_message=f"Error fetching team stats from API: {response.status_code}")
+    except Exception as e:
+        return render_template('error.html', error_message=f"An error occurred: {str(e)}")
+
+# Error handling route
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('error.html', error_message='404 - Not Found'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template('error.html', error_message='500 - Internal Server Error'), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)

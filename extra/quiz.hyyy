@@ -72,11 +72,24 @@
     <h1>Sports Trivia Quiz</h1>
 
     <form id="quiz-form" action="{{ url_for('quiz') }}" method="POST">
-                {% if quiz_questions %}
-                    <p>Answer the following questions based on NFL team stats:</p>
-                    <!-- ... (quiz questions form) ... -->
-                {% endif %}
-            </form>
+        {% if quiz_questions %}
+            <p>Answer the following questions based on NFL team stats:</p>
 
+            {% for question in quiz_questions %}
+                <h2>Question {{ loop.index }}:</h2>
+                <p>{{ question }}</p>
+
+                <label for="answer_{{ loop.index }}">Your Answer:</label>
+                <input type="text" name="answer_{{ loop.index }}" required>
+            {% endfor %}
+            <button type="submit">Submit</button>
+        {% else %}
+            <p>No quiz questions available.</p>
+        {% endif %}
+    </form>
+
+    {% if top_teams %}
+        <p>Top Teams: {{ top_teams }}</p>  <!-- Debug statement -->
+    {% endif %}
 </body>
 </html>
