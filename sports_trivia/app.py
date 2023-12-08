@@ -322,7 +322,7 @@ def quiz():
         return render_template('quiz_result.html', percent_score=percent_score)
 
     # total_questions = 5  #
-    # percent_score = 0  # Default percent score
+    # percent_score = 0  # percent score
 
     # if len(session['user_answers']) == total_questions:
     #percent_score = (session['score']['correct'] / total_questions) * 100
@@ -337,10 +337,8 @@ def quiz():
             # Check if user_answers list is empty
             if not session['user_answers']:
                 # Handle the case when the user_answers list is empty (e.g., session not properly initialized)
-                # You may choose to redirect the user to the quiz start page or handle it based on your requirements
                 return render_template('error.html', error_message="Session not properly initialized")
 
-            # Get the index of the current question in the user_answers list
             current_question_index = len(session['user_answers']) - 1
 
             # Update the selected_option for the current question
