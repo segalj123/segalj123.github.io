@@ -84,7 +84,7 @@ te_receiving_stats_with_name = pd.merge(wr_te_receiving_stats, te_player_ids, le
 rb_rushing_stats_with_name = pd.merge(rb_rushing_stats, rb_player_ids, left_on='player_id', right_on='gsis_id')
 pk_stats_with_name = pd.merge(pk_stats, pk_ids, left_on='player_id', right_on='gsis_id')
 
-# Merge player  stats with team info using 'team_abbr'. Match the last list to the second to get full info on all players. 
+# Merge player stats with team info using 'team_abbr'. Match the last list to the second to get full info on all players. 
 qb_passing_stats_qb_with_team = pd.merge(qb_passing_stats_qb_with_name, df1_2022, left_on='team', right_on='team_abbr')
 receiver_receiving_stats_wr_with_team = pd.merge(receiver_receiving_stats_with_name, df1_2022, left_on='team', right_on='team_abbr')
 te_receiving_stats_te_with_team = pd.merge(te_receiving_stats_with_name, df1_2022, left_on='team', right_on='team_abbr')
