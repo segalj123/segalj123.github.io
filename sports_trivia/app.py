@@ -18,23 +18,23 @@ app.config['SESSION_TYPE'] = 'filesystem'
 # Add the nfl_data_py package to the system path
 sys.path.append(r'C:\Users\jsegal1\Downloads\nfl_data_py-main\nfl_data_py-main\build\lib')
 
-# Import NFL Data Python library
+# Import NFL Data Python library on github
 import site
 import numpy
 
-# Display all site packages
+# Display all site packages- in the program
 print(site.getsitepackages())
 
 # Set display options for Pandas
 pd.set_option('display.max_columns', None)
 
-# Import NFL data for the 2022 season
+# Import NFL data for the 2022 season - all data
 df1_2022 = nfl.import_team_desc()
 df_2022 = nfl.import_seasonal_data([2022])
 df_schedule = nfl.import_schedules([2022])
 ids = nfl.import_ids()
 
-# Display player passing stats
+# Display player QB stats
 qb_passing_columns = [
     'player_id', 'season', 'season_type', 'completions', 'attempts', 'passing_yards', 'passing_tds',
     'interceptions', 'sacks', 'sack_yards', 'passing_air_yards', 'passing_yards_after_catch',
@@ -42,6 +42,7 @@ qb_passing_columns = [
 ]
 qb_passing_stats = df_2022[qb_passing_columns]
 
+# Display player RB stats
 rb_rushing_columns = [
     'player_id', 'season', 'season_type', 'carries', 'rushing_yards', 'rushing_tds',
     'rushing_fumbles', 'rushing_fumbles_lost', 'rushing_first_downs', 'rushing_epa',
@@ -102,6 +103,7 @@ pk_stats_pk_with_team = pd.merge(pk_stats_with_name, df1_2022, left_on='team', r
 
 # Define a function to generate questions for a given category
 def generate_category_question(category_df, category_names):
+
     # Randomly select a category
     selected_category = random.choice(category_names)
     
@@ -110,7 +112,7 @@ def generate_category_question(category_df, category_names):
     # Sort the DataFrame by the selected category
     sorted_df = category_df.sort_values(by=selected_category, ascending=False)
     
-    # Get the player with the highest value in the selected category
+    # Get the player with the highest value in the randomly selected category
     correct_answer = sorted_df.iloc[0]['name']
     
     # Get the top 15 players in the selected category (excluding the correct answer)
@@ -319,7 +321,7 @@ def quiz():
         percent_score = (session['score']['correct'] / 10) * 100
         return render_template('quiz_result.html', percent_score=percent_score)
 
-    # total_questions = 5  # Change this to the total number of questions you want
+    # total_questions = 5  #
     # percent_score = 0  # Default percent score
 
     # if len(session['user_answers']) == total_questions:
