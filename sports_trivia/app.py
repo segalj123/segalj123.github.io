@@ -123,7 +123,7 @@ def generate_category_question(category_df, category_names):
 
     # Generate the multiple-choice question
     
-    question = f"What player in 2022 leads the NFL in {selected_category}?"
+    question = f"What player in 2022 led the NFL in {selected_category}?"
     options = [correct_answer] + other_players
 
     #Print the question and options
@@ -156,7 +156,7 @@ def generate_and_store_rb_question():
     other_players = random.sample(top_15_players, 3)
 
     # Generate the RB multiple-choice question
-    question = f"Which RB in 2022 leads the NFL in {formatted_category}?"
+    question = f"Which RB in 2022 led the NFL in {formatted_category}?"
     options = [correct_answer] + other_players
 
     # Store the RB question and answer in the session
@@ -174,7 +174,7 @@ def generate_and_store_wr_question():
     formatted_category = selected_category.replace('_', ' ')
 
     # Sort the WR receiving stats by the selected category
-    sorted_df = wr_te_receiving_stats_with_name.sort_values(by=selected_category, ascending=False)
+    sorted_df = receiver_receiving_stats_with_name.sort_values(by=selected_category, ascending=False)
 
     # Get the player with the highest value in the selected category
     correct_answer = sorted_df.iloc[0]['name']
@@ -186,7 +186,7 @@ def generate_and_store_wr_question():
     other_players = random.sample(top_15_players, 3)
 
     # Generate the WR multiple-choice question
-    question = f"Which WR in 2022 leads the NFL in {formatted_category}?"
+    question = f"Which WR in 2022 led the NFL in {formatted_category}?"
     options = [correct_answer] + other_players
 
     # Store the WR question and answer in the session
@@ -203,7 +203,7 @@ def generate_and_store_te_question():
     formatted_category = selected_category.replace('_', ' ')
 
     # Sort the TE receiving stats by the selected category
-    sorted_df = wr_te_receiving_stats_with_name.sort_values(by=selected_category, ascending=False)
+    sorted_df = te_receiving_stats_with_name.sort_values(by=selected_category, ascending=False)
 
     # Get the player with the highest value in the selected category
     correct_answer = sorted_df.iloc[0]['name']
@@ -215,7 +215,7 @@ def generate_and_store_te_question():
     other_players = random.sample(top_15_players, 3)
 
     # Generate the TE multiple-choice question
-    question = f"Which TE in 2022 leads the NFL in {formatted_category}?"
+    question = f"Which TE in 2022 led the NFL in {formatted_category}?"
     options = [correct_answer] + other_players
 
     # Store the TE question and answer in the session
@@ -241,7 +241,7 @@ def generate_and_store_pk_question():
     other_players = random.sample(top_15_players, 3)
 
     # Generate the PK multiple-choice question
-    question = f"Which PK in 2022 leads the NFL in {formatted_category}?"
+    question = f"Which PK in 2022 led the NFL in {formatted_category}?"
     options = [correct_answer] + other_players
 
     # Store the PK question and answer in the session
@@ -280,7 +280,7 @@ def generate_top5_question(category_df, category_names):
     other_players = random.sample(sorted_df.iloc[6:]['name'].tolist(), 3)
 
     # Generate the multiple-choice question
-    question = f"Which player in the NFL in 2022 is in the top 5 in {formatted_category}?"
+    question = f"Which QB in the 2022 NFL season was in the top 5 in {formatted_category}?"
     options = [correct_answer] + other_players
 
     return question.replace('_', ' '), options, correct_answer
@@ -293,7 +293,7 @@ def generate_and_store_question(category_df, category_names, question_type):
         top_5_players = sorted_df.head(5)['name'].tolist()
         correct_answer = sorted_df.iloc[0]['name']
         other_players = random.sample(sorted_df.iloc[6:20]['name'].tolist(), 3)
-        question = f"Which player in the NFL in 2022 is in the top 5 in {formatted_category}?"
+        question = f"Which QB in the NFL in 2022 was in the top 5 in {formatted_category}?"
         options = [correct_answer] + other_players
     else:
         selected_category = random.choice(category_names)
@@ -302,7 +302,7 @@ def generate_and_store_question(category_df, category_names, question_type):
         correct_answer = sorted_df.iloc[0]['name']
         top_15_players = sorted_df.iloc[1:16]['name'].tolist()
         other_players = random.sample(top_15_players, 3)
-        question = f"What player in 2022 leads the NFL in {formatted_category}?"
+        question = f"What QB in 2022 led the NFL in {formatted_category}?"
         options = [correct_answer] + other_players
 
     session['questions'].append({'question': question, 'correct_answer': correct_answer})
@@ -352,24 +352,29 @@ def quiz():
                 session['score']['wrong'] += 1
 
 
+    # Weight so less kicker questions are asked
+    position_weights = {
+        'QB': 1,
+        'RB': 1,
+        'WR': 1,
+        'TE': 1,
+        'PK': 0.5,  
+    }
 
-    # Choose the category based on the player position
-    player_position = 'RB'  # Change this to the desired player position
+    # Randomly select a player position based on weights I have set above
+    player_position = random.choices(list(position_weights.keys()), weights=list(position_weights.values()))[0]
+
+    # Generate and store questions based on the selected player position
     if player_position == 'QB':
-        # Generate and store questions for QB
         question_type = random.choice(['top5', 'category'])
         question, options = generate_and_store_question(qb_passing_stats_qb_with_name, categories, question_type)
     elif player_position == 'RB':
-        # Generate and store questions for RB
         question, options = generate_and_store_rb_question()
     elif player_position == 'WR':
-        # Generate and store questions for WR
         question, options = generate_and_store_wr_question()
     elif player_position == 'TE':
-        # Generate and store questions for TE
         question, options = generate_and_store_te_question()
     elif player_position == 'PK':
-        # Generate and store questions for PK
         question, options = generate_and_store_pk_question()
 
     return render_template('quiz.html', question=question, options=options, score=session['score'])
