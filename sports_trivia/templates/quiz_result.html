@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Quiz Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9; /* Light gray background */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #ff9900; /* Gold color for the title */
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .score-container {
+            background-color: #fff; /* White background for the score container */
+            border: 5px solid #ff9900; /* Gold border around the score container */
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .score {
+            color: #ff9900; /* Gold color for the score */
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="score-container">
+        <h1>Quiz Result</h1>
+        <p class="score">Your score: {{ percent_score }}%</p>
+        <p>Correct answers: {{ session['score']['correct'] }}</p>
+        <p>Wrong answers: {{ session['score']['wrong'] }}</p>
+    </div>
+</body>
+</html>

@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sports Trivia Quiz</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #D1E8E2; /* Soft Mint Green */
             margin: 20px;
             text-align: center;
         }
-        
+
         h1 {
             background: linear-gradient(to right, #19747E, #A9D6E5); /* Gradient from Deep Teal to Light Sky Blue - from website fonts */
             -webkit-background-clip: text; /* Clip text to the background gradient */
@@ -24,7 +23,7 @@
             font-size: 16px;
         }
 
-        a {
+        .start-quiz-btn {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 20px;
@@ -34,40 +33,18 @@
             font-weight: bold;
             border-radius: 5px;
             transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
         }
 
-        a:hover {
+        .start-quiz-btn:hover {
             background-color: #145c68; /* Slightly darker shade on hover */
         }
     </style>
 </head>
-
 <body>
-    <h1>Team Stats</h1>
-
-    <table border="1">
-        <tr>
-            <th>Rank</th>
-            <th>Team Name</th>
-            <!-- ... (other column headers) ... -->
-        </tr>
-
-        {% for team in team_stats %}
-            <tr>
-                <td>{{ loop.index }}</td> <!-- Add this line for the team number -->
-                <td>{{ team['team_name'] }}</td>
-                <!-- ... (other columns) ... -->
-            </tr>
-        {% endfor %}
-    </table>
-</body>
-
-</html>
-
-<body>
-    <h1>Welcome to the Sports Trivia Quiz!</h1>
-    <p>Test all your brilliant sports knowledge by taking our quiz.</p>
-    <a href="{{ url_for('quiz') }}">Start Quiz</a>
+    <h1>Welcome to the Sports Trivia Quiz</h1>
+    <p>Test your knowledge of NFL team stats!</p>
+    <a href="{{ url_for('quiz') }}" class="start-quiz-btn">To The Quiz</a>
 </body>
 </html>
-
