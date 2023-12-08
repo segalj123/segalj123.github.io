@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9; /* Light gray background */
+            background-color: #f9f9f9;
+            /* Light gray background */
             color: #333;
             margin: 0;
             padding: 0;
@@ -18,7 +20,8 @@
         }
 
         h1 {
-            color: #ff9900; /* Gold color for result title */
+            color: #ff9900;
+            /* Gold color for result title */
             text-align: center;
         }
 
@@ -29,20 +32,24 @@
         }
 
         .score-container {
-            background-color: #fff; /* White background for the score container */
-            border: 5px solid #ff9900; /* Gold border around the score container make the user feel special */
+            background-color: #fff;
+            /* White background for the score container */
+            border: 5px solid #ff9900;
+            /* Gold border around the score container make the user feel special */
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .score {
-            color: #ff9900; /* Gold color for the score. A lot of gold, but it's okay. */
+            color: #ff9900;
+            /* Gold color for the score. A lot of gold, but it's okay. */
             font-size: 24px;
             font-weight: bold;
         }
     </style>
 </head>
+
 <body>
     <div class="score-container">
         <h1>Quiz Result</h1>
@@ -50,5 +57,32 @@
         <p>Correct answers: {{ session['score']['correct'] }}</p>
         <p>Wrong answers: {{ session['score']['wrong'] }}</p>
     </div>
+
+    <!-- Add this script tag to include the confetti-js library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.0.3/dist/canvas-confetti.min.js"></script>
+
+    <script>
+        // Get the percent score
+        var percentScore = {{ percent_score }};
+
+        // Display a message based on the score
+        if (percentScore > 80) {
+            // Confetti time!
+            var confettiSettings = {
+                target: 'confetti-canvas',
+                max: 200,
+                size: 2,
+                animate: true,
+                props: ['circle', 'square', 'triangle', 'line'],
+            };
+            var confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+        } else if (percentScore < 50) {
+            alert("Oops! Keep practicing. You'll get better! 😊");    
+        } else {
+            alert("Good effort! There's room for improvement. Keep it up! 👍");
+        }
+    </script>
 </body>
+
 </html>

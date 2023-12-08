@@ -99,7 +99,7 @@ pk_stats_pk_with_team = pd.merge(pk_stats_with_name, df1_2022, left_on='team', r
 
 #qb_passing_stats_qb_with_name = pd.merge(qb_passing_stats, qb_players_ids, left_on='player_id', right_on='gsis_id')
 
-
+num_questions_in_quiz = 5
 
 # Define a function to generate questions for a given category
 def generate_category_question(category_df, category_names):
@@ -109,17 +109,18 @@ def generate_category_question(category_df, category_names):
     
     formatted_category = selected_category.replace('_', ' ')
 
+
     # Sort the DataFrame by the selected category
     sorted_df = category_df.sort_values(by=selected_category, ascending=False)
     
     # Get the player with the highest value in the randomly selected category
     correct_answer = sorted_df.iloc[0]['name']
     
-    # Get the top 15 players in the selected category (excluding the correct answer)
-    top_15_players = sorted_df.iloc[1:16]['name'].tolist()
+    # Get the top 10 players in the selected category (excluding the correct answer)
+    top_10_players = sorted_df.iloc[1:10]['name'].tolist()
 
-    # Select three random players from the top 15
-    other_players = random.sample(top_15_players, 3)
+    # Select three random players from the top 10
+    other_players = random.sample(top_10_players, 3)
 
     # Generate the multiple-choice question
     
@@ -143,20 +144,36 @@ def generate_and_store_rb_question():
     'rushing_2pt_conversions', 'fantasy_points','fantasy_points_ppr'])
     formatted_category = selected_category.replace('_', ' ')
 
+    rb_category_mapping = {
+        'carries': 'Rushing Attempts',
+        'rushing_yards': 'Rushing Yards',
+        'rushing_tds': 'Rushing Touchdowns',
+        'rushing_fumbles': 'Rushing Fumbles',
+        'rushing_fumbles_lost': 'Lost Rushing Fumbles',
+        'rushing_first_downs': 'Rushing First Downs',
+        'rushing_epa': 'Rushing EPA(Expected Points Added)',
+        'rushing_2pt_conversions': 'Rushing 2pt Conversions',
+        'fantasy_points': 'Fantasy Points',
+        'fantasy_points_ppr': 'Fantasy Points in (PPR) scoring'
+    }
+
+    # Use the mapping to get the formatted category name for the question
+    formatted_category_for_question = rb_category_mapping.get(selected_category, formatted_category)
+
     # Sort the RB rushing stats by the selected category
     sorted_df = rb_rushing_stats_with_name.sort_values(by=selected_category, ascending=False)
 
     # Get the player with the highest value in the selected category
     correct_answer = sorted_df.iloc[0]['name']
 
-    # Get the top 15 RB players in the selected category (excluding the correct answer)
-    top_15_players = sorted_df.iloc[1:16]['name'].tolist()
+    # Get the top 10 RB players in the selected category (excluding the correct answer)
+    top_10_players = sorted_df.iloc[1:10]['name'].tolist()
 
-    # Select three random RB players from the top 15
-    other_players = random.sample(top_15_players, 3)
+    # Select three random RB players from the top 10
+    other_players = random.sample(top_10_players, 3)
 
     # Generate the RB multiple-choice question
-    question = f"Which RB in 2022 led the NFL in {formatted_category}?"
+    question = f"Which RB in 2022 led the NFL in {formatted_category_for_question}?"
     options = [correct_answer] + other_players
 
     # Store the RB question and answer in the session
@@ -167,11 +184,37 @@ def generate_and_store_rb_question():
 
 def generate_and_store_wr_question():
     selected_category = random.choice(['receptions', 'targets', 'receiving_yards', 'receiving_tds',
-    'receiving_fumbles', 'receiving_fumbles_lost', 'receiving_air_yards', 'receiving_yards_after_catch',
-    'receiving_first_downs', 'receiving_epa', 'receiving_2pt_conversions', 'racr', 'target_share',
-    'air_yards_share', 'wopr_x', 'fantasy_points','fantasy_points_ppr', 'tgt_sh'])
+                                       'receiving_fumbles', 'receiving_fumbles_lost', 'receiving_air_yards',
+                                       'receiving_yards_after_catch', 'receiving_first_downs', 'receiving_epa',
+                                       'receiving_2pt_conversions', 'racr', 'target_share', 'air_yards_share',
+                                       'wopr_x', 'fantasy_points', 'fantasy_points_ppr', 'tgt_sh'])
 
     formatted_category = selected_category.replace('_', ' ')
+
+    # Define a mapping of WR categories to how they should be presented in the questions
+    wr_category_mapping = {
+        'receptions': 'Receptions',
+        'targets': 'Targets',
+        'receiving_yards': 'Receiving Yards',
+        'receiving_tds': 'Receiving Touchdowns',
+        'receiving_fumbles': 'Receiving Fumbles',
+        'receiving_fumbles_lost': 'Lost Receiving Fumbles',
+        'receiving_air_yards': 'Receiving Air Yards',
+        'receiving_yards_after_catch': 'Receiving Yards After Catch',
+        'receiving_first_downs': 'Receiving First Downs',
+        'receiving_epa': 'Expected Percentage Added (EPA)',
+        'receiving_2pt_conversions': 'Receiving 2pt Conversions',
+        'racr': 'Receiver Air Conversion Ratio (RACR)',
+        'target_share': 'Target Share',
+        'air_yards_share': 'Air Yards Share',
+        'wopr_x': 'Weighted Opportunity Rating (WOPR)',
+        'fantasy_points': 'Fantasy Points',
+        'fantasy_points_ppr': 'Fantasy Points in (PPR) Scoring',
+        'tgt_sh': 'Target Share'
+    }
+
+    # Use the mapping to get the formatted category name for the question
+    formatted_category_for_question = wr_category_mapping.get(selected_category, formatted_category)
 
     # Sort the WR receiving stats by the selected category
     sorted_df = receiver_receiving_stats_with_name.sort_values(by=selected_category, ascending=False)
@@ -179,14 +222,14 @@ def generate_and_store_wr_question():
     # Get the player with the highest value in the selected category
     correct_answer = sorted_df.iloc[0]['name']
 
-    # Get the top 15 WR players in the selected category (excluding the correct answer)
-    top_15_players = sorted_df.iloc[1:16]['name'].tolist()
+    # Get the top 10 WR players in the selected category (excluding the correct answer)
+    top_10_players = sorted_df.iloc[1:10]['name'].tolist()
 
-    # Select three random WR players from the top 15
-    other_players = random.sample(top_15_players, 3)
+    # Select three random WR players from the top 10
+    other_players = random.sample(top_10_players, 3)
 
     # Generate the WR multiple-choice question
-    question = f"Which WR in 2022 led the NFL in {formatted_category}?"
+    question = f"Which WR in 2022 led the NFL in {formatted_category_for_question}?"
     options = [correct_answer] + other_players
 
     # Store the WR question and answer in the session
@@ -195,12 +238,40 @@ def generate_and_store_wr_question():
 
     return question.replace('_', ' '), options
 
+
 def generate_and_store_te_question():
     selected_category = random.choice(['receptions', 'targets', 'receiving_yards', 'receiving_tds',
-    'receiving_fumbles', 'receiving_fumbles_lost', 'receiving_air_yards', 'receiving_yards_after_catch',
-    'receiving_first_downs', 'receiving_epa', 'receiving_2pt_conversions', 'racr', 'target_share',
-    'air_yards_share', 'wopr_x', 'fantasy_points','fantasy_points_ppr', 'tgt_sh'])
+                                       'receiving_fumbles', 'receiving_fumbles_lost', 'receiving_air_yards',
+                                       'receiving_yards_after_catch', 'receiving_first_downs', 'receiving_epa',
+                                       'receiving_2pt_conversions', 'racr', 'target_share', 'air_yards_share',
+                                       'wopr_x', 'fantasy_points', 'fantasy_points_ppr', 'tgt_sh'])
+
     formatted_category = selected_category.replace('_', ' ')
+
+    # Define a mapping of TE categories to how they should be presented in the questions
+    te_category_mapping = {
+        'receptions': 'Receptions',
+        'targets': 'Targets',
+        'receiving_yards': 'Receiving Yards',
+        'receiving_tds': 'Receiving Touchdowns',
+        'receiving_fumbles': 'Receiving Fumbles',
+        'receiving_fumbles_lost': 'Lost Receiving Fumbles',
+        'receiving_air_yards': 'Receiving Air Yards',
+        'receiving_yards_after_catch': 'Receiving Yards After Catch',
+        'receiving_first_downs': 'Receiving First Downs',
+        'receiving_epa': 'Expected Percentage Added (EPA)',
+        'receiving_2pt_conversions': 'Receiving 2pt Conversions',
+        'racr': 'Receiver Air Conversion Ratio (RACR)',
+        'target_share': 'Target Share',
+        'air_yards_share': 'Air Yards Share',
+        'wopr_x': 'Weighted Opportunity Rating (WOPR)',
+        'fantasy_points': 'Fantasy Points',
+        'fantasy_points_ppr': 'Fantasy Points in (PPR) Scoring',
+        'tgt_sh': 'Target Share'
+    }
+
+    # Use the mapping to get the formatted category name for the question
+    formatted_category_for_question = te_category_mapping.get(selected_category, formatted_category)
 
     # Sort the TE receiving stats by the selected category
     sorted_df = te_receiving_stats_with_name.sort_values(by=selected_category, ascending=False)
@@ -208,14 +279,14 @@ def generate_and_store_te_question():
     # Get the player with the highest value in the selected category
     correct_answer = sorted_df.iloc[0]['name']
 
-    # Get the top 15 TE players in the selected category (excluding the correct answer)
-    top_15_players = sorted_df.iloc[1:16]['name'].tolist()
+    # Get the top 10 TE players in the selected category (excluding the correct answer)
+    top_10_players = sorted_df.iloc[1:10]['name'].tolist()
 
-    # Select three random TE players from the top 15
-    other_players = random.sample(top_15_players, 3)
+    # Select three random TE players from the top 10
+    other_players = random.sample(top_10_players, 3)
 
     # Generate the TE multiple-choice question
-    question = f"Which TE in 2022 led the NFL in {formatted_category}?"
+    question = f"Which TE in 2022 led the NFL in {formatted_category_for_question}?"
     options = [correct_answer] + other_players
 
     # Store the TE question and answer in the session
@@ -223,6 +294,7 @@ def generate_and_store_te_question():
     session['user_answers'].append({'question': question, 'selected_option': None, 'correct_answer': correct_answer})
 
     return question.replace('_', ' '), options
+
 
 def generate_and_store_pk_question():
     selected_category = random.choice(['fantasy_points', 'fantasy_points_ppr'])  # You can choose the relevant category for PK
@@ -234,11 +306,11 @@ def generate_and_store_pk_question():
     # Get the player with the highest value in the selected category
     correct_answer = sorted_df.iloc[0]['name']
 
-    # Get the top 15 PK players in the selected category (excluding the correct answer)
-    top_15_players = sorted_df.iloc[1:16]['name'].tolist()
+    # Get the top 10 PK players in the selected category (excluding the correct answer)
+    top_10_players = sorted_df.iloc[1:10]['name'].tolist()
 
-    # Select three random PK players from the top 15
-    other_players = random.sample(top_15_players, 3)
+    # Select three random PK players from the top 10
+    other_players = random.sample(top_10_players, 3)
 
     # Generate the PK multiple-choice question
     question = f"Which PK in 2022 led the NFL in {formatted_category}?"
@@ -300,8 +372,8 @@ def generate_and_store_question(category_df, category_names, question_type):
         formatted_category = selected_category.replace('_', ' ')
         sorted_df = category_df.sort_values(by=selected_category, ascending=False)
         correct_answer = sorted_df.iloc[0]['name']
-        top_15_players = sorted_df.iloc[1:16]['name'].tolist()
-        other_players = random.sample(top_15_players, 3)
+        top_10_players = sorted_df.iloc[1:10]['name'].tolist()
+        other_players = random.sample(top_10_players, 3)
         question = f"What QB in 2022 led the NFL in {formatted_category}?"
         options = [correct_answer] + other_players
 
@@ -317,17 +389,9 @@ def home():
 
 @app.route('/quiz', methods=['GET', 'POST'])
 def quiz():
-    if len(session['user_answers']) == 10:
-        percent_score = (session['score']['correct'] / 10) * 100
+    if len(session['user_answers']) >= num_questions_in_quiz:
+        percent_score = (session['score']['correct'] / num_questions_in_quiz) * 100
         return render_template('quiz_result.html', percent_score=percent_score)
-
-    # total_questions = 5  #
-    # percent_score = 0  # percent score
-
-    # if len(session['user_answers']) == total_questions:
-    #percent_score = (session['score']['correct'] / total_questions) * 100
-
-    # return render_template('quiz_result.html', percent_score=percent_score)
 
     if request.method == 'POST':
         # Handle submitted answer
@@ -341,8 +405,18 @@ def quiz():
 
             current_question_index = len(session['user_answers']) - 1
 
-            # Update the selected_option for the current question
-            session['user_answers'][current_question_index]['selected_option'] = selected_option
+            # Check if the length is greater than or equal to 5 before updating scores
+            if len(session['user_answers']) >= num_questions_in_quiz:
+                percent_score = (session['score']['correct'] / num_questions_in_quiz) * 100
+                return render_template('quiz_result.html', percent_score=percent_score)
+
+                # Update the selected_option for the current question
+                session['user_answers'].append({
+                'question': session['questions'][current_question_index]['question'],
+                'selected_option': selected_option,
+                'correct_answer': session['questions'][current_question_index]['correct_answer']
+                })
+
 
             correct_answer = session['user_answers'][current_question_index]['correct_answer']
 
@@ -351,14 +425,18 @@ def quiz():
             else:
                 session['score']['wrong'] += 1
 
+    if len(session['user_answers']) >= num_questions_in_quiz:
+        percent_score = (session['score']['correct'] / num_questions_in_quiz) * 100
+        return render_template('quiz_result.html', percent_score=percent_score)        
+
 
     # Weight so less kicker questions are asked
     position_weights = {
         'QB': 1,
         'RB': 1,
         'WR': 1,
-        'TE': 1,
-        'PK': 0.5,  
+        'TE': 0.8,
+        'PK': 0,  
     }
 
     # Randomly select a player position based on weights I have set above
@@ -377,6 +455,7 @@ def quiz():
     elif player_position == 'PK':
         question, options = generate_and_store_pk_question()
 
+    session.modified = True 
     return render_template('quiz.html', question=question, options=options, score=session['score'])
 
 
