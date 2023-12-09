@@ -57,17 +57,21 @@ We acknowledge the following resources:
     **Feedback Iteration:** Consider implementing a rough draft day to facilitate early feedback. This could potentially lead to more refined and polished project elements.
 
 ### Learning Perspective
+
 **Learnings:**
   - The project served as a profound learning experience, consolidating ideas from the year and providing a holistic view of the coding landscape.
   - Witnessing the Whole Picture: This project enabled me to see the whole picture, bringing together concepts learned over time.
   - Code Structure and Sequels: Reflecting on the project, I realize the potential benefits of incorporating more sequels into the code for a more streamlined development process.
+  
   **Website vs. Terminal:**
   - A website-based project delivered a superior final product compared to assignments confined to the terminal. This shift provided a better coding experience and a welcome break from traditional studies.
   - Endless Exploration: The project felt like a never-ending problem, allowing continuous additions to the code and fostering a sense of exploration and creativity.
+  
   **Future Coding Endeavors:**
   - I plan to continue coding and explore the possibility of learning new programming languages.
   - Shifting Perspective: While initially hesitant about coding, this class and project have sparked a newfound interest, and I can envision experimenting with coding as a side pursuit.
   - Inspiring Growth: Observing the improvement in my friend's projects over time has been enjoyable and inspiring, adding to the overall positive experience.
+  
 **ChatGPT's Assistance:**
   - ChatGPT played a crucial role in translating my ideas into code. When faced with uncertainties about where to start or specific commands, ChatGPT provided clear and concise guidance.
   - Simplifying Complexity: Navigating resources like Reddit or the web can be confusing, but ChatGPT simplified the understanding of coding concepts and helped resolve errors.
