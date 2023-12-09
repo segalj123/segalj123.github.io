@@ -99,7 +99,7 @@ pk_stats_pk_with_team = pd.merge(pk_stats_with_name, df1_2022, left_on='team', r
 
 #qb_passing_stats_qb_with_name = pd.merge(qb_passing_stats, qb_players_ids, left_on='player_id', right_on='gsis_id')
 
-num_questions_in_quiz = 5
+num_questions_in_quiz = 10
 
 # Define a function to generate questions for a given category
 def generate_category_question(category_df, category_names):
@@ -386,7 +386,6 @@ def home():
     initialize_quiz_session()
     return render_template('index.html')
 
-
 @app.route('/quiz', methods=['GET', 'POST'])
 def quiz():
     if len(session['user_answers']) >= num_questions_in_quiz:
@@ -405,32 +404,28 @@ def quiz():
 
             current_question_index = len(session['user_answers']) - 1
 
-            # Check if the length is greater than or equal to 5 before updating scores
-            if len(session['user_answers']) >= num_questions_in_quiz:
-                percent_score = (session['score']['correct'] / num_questions_in_quiz) * 100
-                return render_template('quiz_result.html', percent_score=percent_score)
-
+            # Check if the current_question_index is within a valid range
+            if 0 <= current_question_index < len(session['questions']):
                 # Update the selected_option for the current question
-                session['user_answers'].append({
-                'question': session['questions'][current_question_index]['question'],
-                'selected_option': selected_option,
-                'correct_answer': session['questions'][current_question_index]['correct_answer']
-                })
+                session['user_answers'][current_question_index]['selected_option'] = selected_option
 
+                correct_answer = session['questions'][current_question_index]['correct_answer']
 
-            correct_answer = session['user_answers'][current_question_index]['correct_answer']
+                if selected_option == correct_answer:
+                    session['score']['correct'] += 1
+                else:
+                    session['score']['wrong'] += 1
 
-            if selected_option == correct_answer:
-                session['score']['correct'] += 1
-            else:
-                session['score']['wrong'] += 1
+            # Check if the length is greater than or equal to before updating scores
+            if len(session['user_answers']) >= num_questions_in_quiz:
+                percent_score = (session['score']['correct'] / um_questions_in_quiz) * 100
+                return render_template('quiz_result.html', percent_score=percent_score)
 
     if len(session['user_answers']) >= num_questions_in_quiz:
         percent_score = (session['score']['correct'] / num_questions_in_quiz) * 100
-        return render_template('quiz_result.html', percent_score=percent_score)        
+        return render_template('quiz_result.html', percent_score=percent_score)
 
-
-    # Weight so less kicker questions are asked
+# Weight so less kicker questions are asked
     position_weights = {
         'QB': 1,
         'RB': 1,

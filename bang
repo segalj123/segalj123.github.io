@@ -1,0 +1,13 @@
+{% if question and 'RB' in question %}
+            <div>
+                {% for i in range(1, 7) %}
+                    <img src="C:\Users\jsegal1\Downloads\Gifs\RB{{ i }}.gif" alt="RB gif {{ i }}" style="display: none;">
+                {% endfor %}
+            </div>
+            <script>
+                // JavaScript to randomly select and display one RB GIF
+                const rbGifs = document.querySelectorAll('img');
+                const randomIndex = Math.floor(Math.random() * rbGifs.length);
+                rbGifs[randomIndex].style.display = 'block';
+            </script>
+        {% endif %}

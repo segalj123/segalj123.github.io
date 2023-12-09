@@ -100,41 +100,38 @@
         <div class="score">Score: {{ session['score']['correct'] }} / {{ session['score']['correct'] + session['score']['wrong'] }}</div>
         
         <form id="quiz-form" action="{{ url_for('quiz')}}" method="POST">
-          {% if question %}
-              <p>{{ question|safe }}</p>
-              {% for option in options %}
-                  <label>
-                      <input type="radio" name="answer" value="{{ option }}"> {{ option }}
-                  </label>
-              {% endfor %}
-              <br>
-              <button type="submit">Next Question</button>
-          {% else %}
-              <p>No question available.</p>
-          {% endif %}
-      </form>
+            {% if question %}
+                <p>{{ question|safe }}</p>
+                {% for option in options %}
+                    <label>
+                        <input type="radio" name="answer" value="{{ option }}"> {{ option }}
+                    </label>
+                {% endfor %}
+                <br>
+                <button type="submit">Next Question</button>
+            {% else %}
+                <p>No question available.</p>
+            {% endif %}
+        </form>
       
-        
         <div class="modal" id="startQuizModal" tabindex="-1" role="dialog" aria-labelledby="startQuizModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="startQuizModalLabel">Welcome to the 2022 NFL Stat Quiz!</h5>
-                  <button type="button" class="close" aria-label="Close" onclick="closeModal()">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="startQuizModalLabel">Welcome to the 2022 NFL Stat Quiz!</h5>
+                        <button type="button" class="close" aria-label="Close" onclick="closeModal()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Click "Start Quiz" when you are ready to begin.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="closeModal()">Start Quiz</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                  
-                  Click "Start Quiz" when you are ready to begin.
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" onclick="closeModal()">Start Quiz</button>
-                </div>
-                </div>
-              </div>
             </div>
-          </div>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
@@ -142,40 +139,36 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     
     <script>
-      // JavaScript function to close the modal
-      function closeModal() {
-        $("#startQuizModal").modal('hide');
-        // Use localStorage to remember that the modal has been closed
-        localStorage.setItem('quizModalClosed', 'true');
-      }
-    
-      // JavaScript function to start the quiz
-      function startQuiz() {
-        closeModal(); // Close the modal
-      }
-    
-      // JavaScript to conditionally show the modal when the page loads
-      $(document).ready(function () {
-        // Check if the modal should be shown (not closed before)
-        if (!localStorage.getItem('quizModalClosed')) {
-          // Show the modal when the page loads
-          $("#startQuizModal").modal('show');
-    
-          // Close the modal on inside click
-          $('#startQuizModal').on('click', function (e) {
-            e.stopPropagation(); 
-          });
-    
-          // Close the modal on any click outside the modal
-          $(document).on('click', function (e) {
-            closeModal();
-          });
+        // JavaScript function to close the modal
+        function closeModal() {
+            $("#startQuizModal").modal('hide');
+            // Use localStorage to remember that the modal has been closed
+            localStorage.setItem('quizModalClosed', 'true');
         }
-      });
+    
+        // JavaScript function to start the quiz
+        function startQuiz() {
+            closeModal(); // Close the modal
+        }
+    
+        // JavaScript to conditionally show the modal when the page loads
+        $(document).ready(function () {
+            // Check if the modal should be shown (not closed before)
+            if (!localStorage.getItem('quizModalClosed')) {
+                // Show the modal when the page loads
+                $("#startQuizModal").modal('show');
+    
+                // Close the modal on inside click
+                $('#startQuizModal').on('click', function (e) {
+                    e.stopPropagation(); 
+                });
+    
+                // Close the modal on any click outside the modal
+                $(document).on('click', function (e) {
+                    closeModal();
+                });
+            }
+        });
     </script>
-    
-    
-    
-    
 </body>
 </html>
