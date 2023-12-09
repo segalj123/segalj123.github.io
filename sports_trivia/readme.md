@@ -1,5 +1,5 @@
 # Team Members:
--**Jonathan Segal**
+**Jonathan Segal**
 
 ## Project Overview
 My web application is a NFL Trivia Quiz that is focused on testing the users' knowledge of random 2022 NFL trivia. The Trivia is based on positions and who led in a stat that year. I tried to make the quiz as user friendly as possible while still being engaging with a few interactive features. 
