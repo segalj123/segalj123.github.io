@@ -35,7 +35,7 @@
             background-color: #fff;
             /* White background for the score container */
             border: 5px solid #ff9900;
-            /* Gold border around the score container make the user feel special */
+            /* Gold border around the score container make the user feel special and proud */
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -65,7 +65,7 @@
         // Get the percent score
         var percentScore = {{ percent_score }};
 
-        // Display a message based on the score
+        // Display a message based on the score. If did really well show confetti
         if (percentScore > 80) {
             // Confetti time!
             var confettiSettings = {

@@ -4,18 +4,12 @@ import pandas as pd
 import nfl_data_py as nfl
 import random
 
-
+#Starting Flask and using a secret key. Should probably be more complex, but I just chose a number
 app = Flask(__name__)
-app.secret_key = '14'
+app.secret_key = '48230'
 app.config['SESSION_TYPE'] = 'filesystem'
 
-# @app.route('/set_session')
-# def set_session():
-#     session['user_id'] = 1234
-#     session['username'] = 'jonathan_segal'
-#     return 'Session data set!'
-
-# Add the nfl_data_py package to the system path
+# Add the nfl_data_py package to the system path, Pulled from my computer
 sys.path.append(r'C:\Users\jsegal1\Downloads\nfl_data_py-main\nfl_data_py-main\build\lib')
 
 # Import NFL Data Python library on github
@@ -28,7 +22,7 @@ print(site.getsitepackages())
 # Set display options for Pandas
 pd.set_option('display.max_columns', None)
 
-# Import NFL data for the 2022 season - all data
+# Import NFL data for the 2022 season - all data from Github
 df1_2022 = nfl.import_team_desc()
 df_2022 = nfl.import_seasonal_data([2022])
 df_schedule = nfl.import_schedules([2022])
@@ -50,6 +44,7 @@ rb_rushing_columns = [
 ]
 rb_rushing_stats = df_2022[rb_rushing_columns]
 
+# Display WR/TE Stats
 wr_te_receiving_columns = [
     'player_id', 'season', 'season_type', 'receptions', 'targets', 'receiving_yards', 'receiving_tds',
     'receiving_fumbles', 'receiving_fumbles_lost', 'receiving_air_yards', 'receiving_yards_after_catch',
@@ -58,11 +53,13 @@ wr_te_receiving_columns = [
 ]
 wr_te_receiving_stats = df_2022[wr_te_receiving_columns]
 
+#Display PK Stats
 pk_columns = [
     'player_id','fantasy_points','fantasy_points_ppr'
 ]
 pk_stats = df_2022[pk_columns]
 
+#Display General Stats if ever needed
 general_stats_columns = [
     'special_teams_tds', 'games', 'ay_sh', 'yac_sh',
     'wopr_y', 'ry_sh', 'rtd_sh', 'rfd_sh', 'rtdfd_sh', 'dom', 'w8dom', 'yptmpa', 'ppr_sh'
@@ -91,22 +88,17 @@ te_receiving_stats_te_with_team = pd.merge(te_receiving_stats_with_name, df1_202
 rb_rushing_stats_rb_with_team = pd.merge(rb_rushing_stats_with_name, df1_2022, left_on='team', right_on='team_abbr')
 pk_stats_pk_with_team = pd.merge(pk_stats_with_name, df1_2022, left_on='team', right_on='team_abbr')
 
-# # Print passing stats for QB players with additional columns from IDs
-# print(qb_passing_stats_qb_with_team[
-#     ['player_id', 'name', 'position', 'team', 'team_name', 'team_conf', 'team_division', 'completions', 'attempts',
-#      'passing_yards', 'passing_tds', 'interceptions', 'sacks', 'sack_yards', 'passing_air_yards',
-#      'passing_yards_after_catch', 'passing_first_downs', 'passing_epa', 'passing_2pt_conversions']])
-
-#qb_passing_stats_qb_with_name = pd.merge(qb_passing_stats, qb_players_ids, left_on='player_id', right_on='gsis_id')
+#Number of questions in the quiz. CHanges the amount score percent is out of and # of questions in quiz. 
 
 num_questions_in_quiz = 10
 
 # Define a function to generate questions for a given category
 def generate_category_question(category_df, category_names):
 
-    # Randomly select a category
+    # Randomly select a category from choices
     selected_category = random.choice(category_names)
     
+    #Format the category without _ 
     formatted_category = selected_category.replace('_', ' ')
 
 
@@ -138,12 +130,13 @@ def generate_category_question(category_df, category_names):
 
     return selected_category.replace('_', ' '), options, correct_answer
 
+#Function to generate and store the Running Back Questions. 
 def generate_and_store_rb_question():
     selected_category = random.choice(['carries', 'rushing_yards', 'rushing_tds',
     'rushing_fumbles', 'rushing_fumbles_lost', 'rushing_first_downs', 'rushing_epa',
     'rushing_2pt_conversions', 'fantasy_points','fantasy_points_ppr'])
     formatted_category = selected_category.replace('_', ' ')
-
+#Change categories to more readable for the questions
     rb_category_mapping = {
         'carries': 'Rushing Attempts',
         'rushing_yards': 'Rushing Yards',
@@ -182,6 +175,7 @@ def generate_and_store_rb_question():
 
     return question.replace('_', ' '), options
 
+#Function to generate and store the WR questions
 def generate_and_store_wr_question():
     selected_category = random.choice(['receptions', 'targets', 'receiving_yards', 'receiving_tds',
                                        'receiving_fumbles', 'receiving_fumbles_lost', 'receiving_air_yards',
@@ -191,7 +185,7 @@ def generate_and_store_wr_question():
 
     formatted_category = selected_category.replace('_', ' ')
 
-    # Define a mapping of WR categories to how they should be presented in the questions
+    # Mapping of WR categories to how they should be presented in the questions for better readability
     wr_category_mapping = {
         'receptions': 'Receptions',
         'targets': 'Targets',
@@ -239,6 +233,7 @@ def generate_and_store_wr_question():
     return question.replace('_', ' '), options
 
 
+#Function for generating and storing TE questions
 def generate_and_store_te_question():
     selected_category = random.choice(['receptions', 'targets', 'receiving_yards', 'receiving_tds',
                                        'receiving_fumbles', 'receiving_fumbles_lost', 'receiving_air_yards',
@@ -248,7 +243,7 @@ def generate_and_store_te_question():
 
     formatted_category = selected_category.replace('_', ' ')
 
-    # Define a mapping of TE categories to how they should be presented in the questions
+    # Define a mapping of TE categories to how they should be presented in the questions for best readability
     te_category_mapping = {
         'receptions': 'Receptions',
         'targets': 'Targets',
@@ -328,11 +323,13 @@ categories = ['completions', 'attempts', 'passing_yards', 'passing_tds',
     'passing_first_downs', 'passing_epa', 'passing_2pt_conversions', 'fantasy_points','fantasy_points_ppr']
 generate_category_question(qb_passing_stats_qb_with_name, categories)
 
+#start quiz session
 def initialize_quiz_session():
     session['questions'] = []  # List to store generated questions
     session['user_answers'] = []  # List to store user's answers
     session['score'] = {'correct': 0, 'wrong': 0}  # Dictionary to store the score
 
+#Top 5 questions for QBS
 def generate_top5_question(category_df, category_names):
     # Randomly select a category
     selected_category = random.choice(category_names)
@@ -381,11 +378,13 @@ def generate_and_store_question(category_df, category_names, question_type):
     session['user_answers'].append({'question': question, 'selected_option': None, 'correct_answer': correct_answer})
     return question.replace('_', ' '), options
 
+#App route for home page using index.html
 @app.route('/')
 def home():
     initialize_quiz_session()
     return render_template('index.html')
 
+#App route for quiz page and quiz results
 @app.route('/quiz', methods=['GET', 'POST'])
 def quiz():
     if len(session['user_answers']) >= num_questions_in_quiz:
@@ -425,7 +424,7 @@ def quiz():
         percent_score = (session['score']['correct'] / num_questions_in_quiz) * 100
         return render_template('quiz_result.html', percent_score=percent_score)
 
-# Weight so less kicker questions are asked
+# Weight so less kicker adn TE questions are asked. For right now no kicker questions. 
     position_weights = {
         'QB': 1,
         'RB': 1,
