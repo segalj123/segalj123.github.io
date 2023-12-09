@@ -8,8 +8,9 @@ My web application is a NFL Trivia Quiz that is focused on testing the users' kn
 To interact with the application, users can follow these steps:
 1. Click on the "**To The Quiz**" button on the homepage to start the quiz.
 2. Answer the trivia questions presented, and click "**Next Question**" to proceed.
-3. Receive immediate feedback on correct and incorrect answers.
-4. Upon completion, view the quiz result, showing the percentage score and details.
+3. Modal pops up telling you "to click to start the quiz" 
+4. Receive immediate feedback on correct and incorrect answers.
+5. Upon completion, view the quiz result, showing the percentage score and details.
 
 ## Dependencies
 The project depends on the folllowing: 
