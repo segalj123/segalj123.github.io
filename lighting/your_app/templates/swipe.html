@@ -2,71 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swipe Lights</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
-    <style>
-        .swipe-card {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        }
-        .carousel-indicators {
-            position: static;
-            margin-top: 10px;
-        }
-        .carousel-indicators li {
-            background-color: #000;
-        }
-        .carousel-indicators .active {
-            background-color: #555;
-        }
-        .btn-like, .btn-dislike {
-            width: 45%;
-            margin: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
-        <div class="swipe-card card">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    {% for i in range(light.images | length) %}
-                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}"></li>
-                    {% endfor %}
-                </ol>
-                <div class="carousel-inner">
-                    {% for image in light.images %}
-                        <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
-                            <img class="d-block w-100" src="{{ url_for('static', filename='uploads/' + image) }}" alt="Light image {{ loop.index }}">
-                        </div>
-                    {% endfor %}
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+        <h1>Swipe Lights</h1>
+        {% for light in lights %}
+            <div>
+                <h2>{{ light.name }}</h2>
+                {% for i in range(light.images | length) %}
+                    <img src="{{ url_for('static', filename='images/' + light.images[i]) }}" alt="Light image {{ i }}">
+                {% endfor %}
             </div>
-            <div class="card-body text-center">
-                <h5 class="card-title">{{ light.name }}</h5>
-                <p class="card-text">{{ light.category }} - {{ light.color }}</p>
-                <p class="card-text">${{ light.price }} | Min Order: {{ light.min_order_quantity }}</p>
-                <p class="card-text">{{ light.location_type }}</p>
-                <button class="btn btn-success btn-like">Like</button>
-                <button class="btn btn-danger btn-dislike">Dislike</button>
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 </html>

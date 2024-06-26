@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from your_app import db, bcrypt
 from your_app.models import User
 from your_app.users.forms import RegistrationForm, LoginForm
@@ -12,10 +12,16 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
-        return redirect(url_for('users.login'))
+        try:
+            db.session.add(user)
+            db.session.commit()
+            current_app.logger.info(f'New user created: {user.username}, {user.email}')
+            flash('Your account has been created! You are now able to log in', 'success')
+            return redirect(url_for('users.login'))
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f'Error creating user: {e}')
+            flash('An error occurred during registration. Please try again.', 'danger')
     return render_template('register.html', title='Register', form=form)
 
 @users.route('/login', methods=['GET', 'POST'])

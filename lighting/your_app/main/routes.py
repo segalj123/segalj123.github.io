@@ -2,15 +2,13 @@ from flask import Blueprint, render_template
 
 main = Blueprint('main', __name__)
 
-@main.route('/')
 @main.route('/home')
+@main.route('/')
 def home():
     return render_template('home.html')
 
 @main.route('/swipe')
 def swipe():
-    return render_template('swipe.html')
-
-@main.route('/upload')
-def upload():
-    return render_template('upload.html')
+    # Assuming you have a Light model and you are querying it
+    lights = Light.query.all()
+    return render_template('swipe.html', lights=lights)
