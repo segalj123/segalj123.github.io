@@ -1,140 +1,72 @@
-{% extends "base.html" %}
-{% block title %}Swipe Lights{% endblock %}
-{% block content %}
-<div class="container">
-    <h1 class="mt-4">Swipe Lights</h1>
-    <form method="POST" class="form-inline mb-4">
-        {{ form.hidden_tag() }}
-        <div class="form-group mr-2">
-            {{ form.category.label(class="mr-2") }}
-            {{ form.category(class="form-control") }}
-        </div>
-        <div class="form-group mr-2">
-            {{ form.color.label(class="mr-2") }}
-            {{ form.color(class="form-control") }}
-        </div>
-        <div class="form-group mr-2">
-            {{ form.min_price.label(class="mr-2") }}
-            {{ form.min_price(class="form-control") }}
-        </div>
-        <div class="form-group mr-2">
-            {{ form.max_price.label(class="mr-2") }}
-            {{ form.max_price(class="form-control") }}
-        </div>
-        <div class="form-group mr-2">
-            {{ form.min_order_quantity.label(class="mr-2") }}
-            {{ form.min_order_quantity(class="form-control") }}
-        </div>
-        <div class="form-group mr-2">
-            {{ form.location_type.label(class="mr-2") }}
-            {{ form.location_type(class="form-control") }}
-        </div>
-        <button type="submit" class="btn btn-primary">Apply Filters</button>
-    </form>
-    <div id="lightCard" class="card mb-4">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-                {% for i in range(0, lights[current_index].image_files|length) %}
-                <li data-target="#carouselExampleIndicators" data-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}"></li>
-                {% endfor %}
-            </ol>
-            <div class="carousel-inner">
-                {% for image in lights[current_index].image_files %}
-                <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
-                    <img class="d-block w-100" src="{{ url_for('static', filename='images/' + image) }}" alt="Light Image">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Swipe Lights</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+    <style>
+        .swipe-card {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .carousel-indicators {
+            position: static;
+            margin-top: 10px;
+        }
+        .carousel-indicators li {
+            background-color: #000;
+        }
+        .carousel-indicators .active {
+            background-color: #555;
+        }
+        .btn-like, .btn-dislike {
+            width: 45%;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="swipe-card card">
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    {% for i in range(light.images | length) %}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}"></li>
+                    {% endfor %}
+                </ol>
+                <div class="carousel-inner">
+                    {% for image in light.images %}
+                        <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                            <img class="d-block w-100" src="{{ url_for('static', filename='uploads/' + image) }}" alt="Light image {{ loop.index }}">
+                        </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-        <div class="card-body">
-            <h5 id="lightName" class="card-title">{{ lights[current_index].name }}</h5>
-            <p id="lightCategory" class="card-text">Category: {{ lights[current_index].category }}</p>
-            <p id="lightColor" class="card-text">Color: {{ lights[current_index].color }}</p>
-            <p id="lightPrice" class="card-text">Price: ${{ lights[current_index].price }}</p>
-            <p id="lightMOQ" class="card-text">Min Order Quantity: {{ lights[current_index].min_order_quantity }}</p>
-            <p id="lightLocationType" class="card-text">Location Type: {{ lights[current_index].location_type }}</p>
-        </div>
-        <div class="card-footer">
-            <button class="btn btn-danger" id="dislikeButton">Dislike</button>
-            <button class="btn btn-success" id="likeButton">Like</button>
+            <div class="card-body text-center">
+                <h5 class="card-title">{{ light.name }}</h5>
+                <p class="card-text">{{ light.category }} - {{ light.color }}</p>
+                <p class="card-text">${{ light.price }} | Min Order: {{ light.min_order_quantity }}</p>
+                <p class="card-text">{{ light.location_type }}</p>
+                <button class="btn btn-success btn-like">Like</button>
+                <button class="btn btn-danger btn-dislike">Dislike</button>
+            </div>
         </div>
     </div>
-</div>
-<script>
-const lights = [
-    {% for light in lights %}
-    {
-        id: "{{ light.id }}",
-        name: "{{ light.name }}",
-        category: "{{ light.category }}",
-        image_files: [{% for image in light.image_files %}"{{ url_for('static', filename='images/' + image) }}"{% if not loop.last %}, {% endif %}{% endfor %}],
-        color: "{{ light.color }}",
-        price: "{{ light.price }}",
-        min_order_quantity: "{{ light.min_order_quantity }}",
-        location_type: "{{ light.location_type }}"
-    },
-    {% endfor %}
-];
-
-let currentIndex = 0;
-
-function showLight(index) {
-    if (index < lights.length) {
-        const light = lights[index];
-        document.getElementById('lightName').textContent = light.name;
-        document.getElementById('lightCategory').textContent = "Category: " + light.category;
-        document.getElementById('lightColor').textContent = "Color: " + light.color;
-        document.getElementById('lightPrice').textContent = "Price: $" + light.price;
-        document.getElementById('lightMOQ').textContent = "Min Order Quantity: " + light.min_order_quantity;
-        document.getElementById('lightLocationType').textContent = "Location Type: " + light.location_type;
-
-        const carouselInner = document.querySelector('.carousel-inner');
-        const carouselIndicators = document.querySelector('.carousel-indicators');
-        carouselInner.innerHTML = '';
-        carouselIndicators.innerHTML = '';
-
-        light.image_files.forEach((image, i) => {
-            const activeClass = i === 0 ? 'active' : '';
-            const indicator = `<li data-target="#carouselExampleIndicators" data-slide-to="${i}" class="${activeClass}"></li>`;
-            const carouselItem = `<div class="carousel-item ${activeClass}"><img class="d-block w-100" src="${image}" alt="Light Image"></div>`;
-            carouselIndicators.insertAdjacentHTML('beforeend', indicator);
-            carouselInner.insertAdjacentHTML('beforeend', carouselItem);
-        });
-    } else {
-        document.getElementById('lightCard').style.display = 'none';
-        alert("No more lights to swipe!");
-    }
-}
-
-document.getElementById('dislikeButton').addEventListener('click', function() {
-    currentIndex++;
-    showLight(currentIndex);
-});
-
-document.getElementById('likeButton').addEventListener('click', function() {
-    const lightId = lights[currentIndex].id;
-    fetch('/add_to_wishlist', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ light_id: lightId })
-    }).then(response => response.json())
-      .then(data => {
-          console.log(data.message);
-          currentIndex++;
-          showLight(currentIndex);
-      });
-});
-
-showLight(currentIndex);
-</script>
-{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
