@@ -51,6 +51,10 @@
                                 <div class="invalid-feedback" id="confirm-password-invalid">Passwords do not match.</div>
                             </div>
                             <div class="form-group">
+                                {{ form.user_type.label(class="form-control-label") }}
+                                {{ form.user_type(class="form-control form-control-lg") }}
+                            </div>
+                            <div class="form-group">
                                 {{ form.submit(class="btn btn-primary btn-lg btn-block") }}
                             </div>
                         </form>
@@ -88,7 +92,8 @@
                 $.ajax({
                     url: "{{ url_for('users.check_username') }}",
                     method: 'POST',
-                    data: { username: username.value },
+                    contentType: 'application/json',
+                    data: JSON.stringify({ username: username.value }),
                     success: function(data) {
                         if (data.is_available) {
                             document.getElementById('username-valid').style.display = 'block';
@@ -105,7 +110,8 @@
                 $.ajax({
                     url: "{{ url_for('users.check_email') }}",
                     method: 'POST',
-                    data: { email: email.value },
+                    contentType: 'application/json',
+                    data: JSON.stringify({ email: email.value }),
                     success: function(data) {
                         if (data.is_available) {
                             document.getElementById('email-valid').style.display = 'block';

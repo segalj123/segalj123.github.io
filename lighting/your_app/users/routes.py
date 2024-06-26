@@ -11,7 +11,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password, user_type=form.user_type.data)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!', 'success')
@@ -40,12 +40,14 @@ def logout():
 
 @users.route('/check_username', methods=['POST'])
 def check_username():
-    username = request.form.get('username')
+    data = request.get_json()
+    username = data['username']
     user = User.query.filter_by(username=username).first()
     return jsonify({'is_available': user is None})
 
 @users.route('/check_email', methods=['POST'])
 def check_email():
-    email = request.form.get('email')
+    data = request.get_json()
+    email = data['email']
     user = User.query.filter_by(email=email).first()
     return jsonify({'is_available': user is None})
