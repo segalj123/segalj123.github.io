@@ -1,14 +1,16 @@
-from flask import render_template, request, Blueprint
-from flask_login import login_required, current_user
+from flask import Blueprint, render_template
 
 main = Blueprint('main', __name__)
 
-@main.route("/")
-@main.route("/home")
+@main.route('/')
+@main.route('/home')
 def home():
     return render_template('home.html')
 
-@main.route("/about")
-def about():
-    return render_template('about.html', title='About')
+@main.route('/swipe')
+def swipe():
+    return render_template('swipe.html')
 
+@main.route('/upload')
+def upload():
+    return render_template('upload.html')
