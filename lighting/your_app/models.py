@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     user_type = db.Column(db.String(10), nullable=False)
+    is_first_login = db.Column(db.Boolean, nullable=False, default=True)  # New field
     lights = db.relationship('Light', backref='owner', lazy=True)
     messages = db.relationship('Message', backref='user', lazy=True)
 
@@ -53,9 +54,9 @@ class Wishlist(db.Model):
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    recipient_id = db.Column(db.Integer, nullable=False)
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     body = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"Message('{self.sender_id}', '{self.recipient_id}', '{self.body}', '{self.timestamp}')"
+        return f"Message('{self.sender_id}', '{self.recipient_id}', '{self.timestamp}')"
