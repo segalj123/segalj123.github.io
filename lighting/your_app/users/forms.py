@@ -1,15 +1,27 @@
+# your_app/users/forms.py
+
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, FloatField, IntegerField, SelectField, RadioField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, Optional
-from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from flask_login import current_user
+from your_app.models import User
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    user_type = RadioField('I am a', choices=[('designer', 'Designer'), ('seller', 'Seller')], validators=[DataRequired()])
     submit = SubmitField('Sign Up')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('That username is taken. Please choose a different one.')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('That email is taken. Please choose a different one.')
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -17,41 +29,19 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-class UploadForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()])
-    category = SelectField('Category', choices=[
-        ('Chandelier', 'Chandelier'),
-        ('Pendant', 'Pendant'),
-        ('Ceiling', 'Ceiling'),
-        ('Wall', 'Wall'),
-        ('Table', 'Table'),
-        ('Floor', 'Floor')
-    ], validators=[DataRequired()])
-    image = FileField('Image', validators=[FileAllowed(['jpg', 'png'])])
-    color = StringField('Color', validators=[Optional()])
-    price = FloatField('Price', validators=[Optional()])
-    min_order_quantity = IntegerField('Min Order Quantity', validators=[Optional()])
-    submit = SubmitField('Upload')
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Update')
 
-class FilterForm(FlaskForm):
-    category = SelectField('Category', choices=[
-        ('Chandelier', 'Chandelier'),
-        ('Pendant', 'Pendant'),
-        ('Ceiling', 'Ceiling'),
-        ('Wall', 'Wall'),
-        ('Table', 'Table'),
-        ('Floor', 'Floor')
-    ], validators=[Optional()])
-    color = StringField('Color', validators=[Optional()])
-    min_price = FloatField('Min Price', validators=[Optional()])
-    max_price = FloatField('Max Price', validators=[Optional()])
-    min_order_quantity = IntegerField('Min Order Quantity', validators=[Optional()])
-    location_type = SelectField('Location Type', choices=[
-        ('House', 'House'),
-        ('Apartment', 'Apartment'),
-        ('Industrial', 'Industrial'),
-        ('Commercial', 'Commercial'),
-        ('Outdoor', 'Outdoor'),
-        ('Other', 'Other')
-    ], validators=[Optional()])
-    submit = SubmitField('Apply Filters')
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('That username is taken. Please choose a different one.')
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError('That email is taken. Please choose a different one.')

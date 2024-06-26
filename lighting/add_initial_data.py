@@ -1,4 +1,4 @@
-from lighting.your_app.users import create_app, db
+from lighting import create_app, db
 from your_app.models import User, Light
 from flask_bcrypt import generate_password_hash
 import json

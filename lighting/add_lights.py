@@ -1,4 +1,4 @@
-from lighting.your_app.users import db, create_app
+from lighting import db, create_app
 from your_app.models import Light
 
 app = create_app()

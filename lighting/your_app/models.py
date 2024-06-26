@@ -1,4 +1,4 @@
-from lighting.your_app.users import db, login_manager
+from your_app import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
 
@@ -50,13 +50,3 @@ class Wishlist(db.Model):
 
     def __repr__(self):
         return f"Wishlist('{self.user_id}', '{self.light_id}', '{self.timestamp}')"
-
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    body = db.Column(db.Text, nullable=False)
-    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f"Message('{self.sender_id}', '{self.recipient_id}', '{self.timestamp}')"

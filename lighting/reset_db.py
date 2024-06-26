@@ -1,5 +1,5 @@
 # reset_db.py
-from lighting.your_app.users import create_app, db
+from lighting import create_app, db
 
 app = create_app()
 

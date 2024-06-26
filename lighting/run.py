@@ -1,4 +1,4 @@
-from lighting.your_app.users import create_app
+from lighting import create_app
 
 app = create_app()
 
