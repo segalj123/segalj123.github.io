@@ -40,14 +40,12 @@ def logout():
 
 @users.route('/check_username', methods=['POST'])
 def check_username():
-    data = request.get_json()
-    username = data['username']
+    username = request.form.get('username')
     user = User.query.filter_by(username=username).first()
     return jsonify({'is_available': user is None})
 
 @users.route('/check_email', methods=['POST'])
 def check_email():
-    data = request.get_json()
-    email = data['email']
+    email = request.form.get('email')
     user = User.query.filter_by(email=email).first()
     return jsonify({'is_available': user is None})
