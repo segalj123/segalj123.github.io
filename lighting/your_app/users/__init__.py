@@ -23,7 +23,7 @@ def create_app():
     login_manager.init_app(app)
     migrate.init_app(app, db)
 
-    from your_app.routes import main
+    from lighting.your_app.users.routes import main
     app.register_blueprint(main)
 
     return app

@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
-from your_app import db, bcrypt
+from lighting.your_app.users import db, bcrypt
 from your_app.models import User, Light, Wishlist, LightImage, Message
 from your_app.users.forms import RegistrationForm, LoginForm, UpdateAccountForm
 

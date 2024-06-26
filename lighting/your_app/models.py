@@ -1,4 +1,4 @@
-from your_app import db, login_manager
+from lighting.your_app.users import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
 
