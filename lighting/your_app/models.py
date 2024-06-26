@@ -1,4 +1,3 @@
-# your_app/models.py
 from your_app import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
@@ -14,9 +13,10 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     user_type = db.Column(db.String(10), nullable=False)
-    is_first_login = db.Column(db.Boolean, nullable=False, default=True)  # New field
+    is_first_login = db.Column(db.Boolean, nullable=False, default=True)
     lights = db.relationship('Light', backref='owner', lazy=True)
-    messages = db.relationship('Message', backref='user', lazy=True)
+    messages_sent = db.relationship('Message', foreign_keys='Message.sender_id', backref='author', lazy=True)
+    messages_received = db.relationship('Message', foreign_keys='Message.recipient_id', backref='recipient', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
@@ -51,3 +51,13 @@ class Wishlist(db.Model):
 
     def __repr__(self):
         return f"Wishlist('{self.user_id}', '{self.light_id}', '{self.timestamp}')"
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Message('{self.sender_id}', '{self.recipient_id}', '{self.timestamp}')"

@@ -1,13 +1,20 @@
 from your_app import create_app
+from your_app.initial_data import add_initial_data
+from flask.cli import AppGroup
 
 app = create_app()
 
-if __name__ == "__main__":
-    # Add initial data if it doesn't exist
-    try:
-        from your_app.add_initial_data import add_initial_data
-        add_initial_data()
-    except Exception as e:
-        print(f"Error adding initial data: {e}")
+# Create a custom CLI command
+cli = AppGroup('custom')
 
+@cli.command('add-initial-data')
+def add_initial_data_command():
+    """Add initial data to the database."""
+    with app.app_context():
+        add_initial_data()
+
+# Register the custom CLI command
+app.cli.add_command(cli)
+
+if __name__ == "__main__":
     app.run(debug=True)
