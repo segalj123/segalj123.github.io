@@ -15,6 +15,7 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     user_type = db.Column(db.String(20), nullable=False)
+    is_first_login = db.Column(db.Boolean, nullable=False, default=True)  # Add this line
     lights = db.relationship('Light', backref='author', lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
