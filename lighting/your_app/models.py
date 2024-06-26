@@ -13,20 +13,17 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     user_type = db.Column(db.String(10), nullable=False)
-    lights = db.relationship('Light', backref='owner', lazy=True)
+    posts = db.relationship('Post', backref='author', lazy=True)
 
-class Light(db.Model):
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+
+class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    category = db.Column(db.String(50), nullable=False)
-    image_files = db.Column(db.Text, nullable=False)
-    color = db.Column(db.String(20), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    min_order_quantity = db.Column(db.Integer, nullable=False)
-    location_type = db.Column(db.String(50), nullable=False)
+    title = db.Column(db.String(100), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-class LightImage(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    image_file = db.Column(db.String(100), nullable=False)
-    light_id = db.Column(db.Integer, db.ForeignKey('light.id'), nullable=False)
+    def __repr__(self):
+        return f"Post('{self.title}', '{self.date_posted}')"

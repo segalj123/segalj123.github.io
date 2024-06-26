@@ -17,7 +17,6 @@
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ url_for('users.register') }}">
-
                             {{ form.hidden_tag() }}
                             <div class="form-group">
                                 {{ form.username.label(class="form-control-label") }}
@@ -45,7 +44,7 @@
                         </form>
                     </div>
                     <div class="card-footer text-center">
-                        <p>Already have an account? <a href="{{ url_for('main.login') }}">Login here</a>.</p>
+                        <p>Already have an account? <a href="{{ url_for('users.login') }}">Login here</a>.</p>
                     </div>
                 </div>
             </div>
