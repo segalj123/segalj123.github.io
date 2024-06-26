@@ -6,6 +6,16 @@
     <title>Register</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+    <style>
+        .valid-feedback {
+            display: none;
+            color: green;
+        }
+        .invalid-feedback {
+            display: none;
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -16,35 +26,29 @@
                         <h2>Register</h2>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ url_for('users.register') }}">
+                        <form method="POST" action="{{ url_for('users.register') }}" id="registerForm">
                             {{ form.hidden_tag() }}
                             <div class="form-group">
                                 {{ form.username.label(class="form-control-label") }}
                                 {{ form.username(class="form-control form-control-lg") }}
-                                {% for error in form.username.errors %}
-                                    <small class="text-danger">{{ error }}</small>
-                                {% endfor %}
+                                <div class="valid-feedback" id="username-valid">Username is available.</div>
+                                <div class="invalid-feedback" id="username-invalid">Username is taken.</div>
                             </div>
                             <div class="form-group">
                                 {{ form.email.label(class="form-control-label") }}
                                 {{ form.email(class="form-control form-control-lg") }}
-                                {% for error in form.email.errors %}
-                                    <small class="text-danger">{{ error }}</small>
-                                {% endfor %}
+                                <div class="valid-feedback" id="email-valid">Email is valid.</div>
+                                <div class="invalid-feedback" id="email-invalid">Email is already registered.</div>
                             </div>
                             <div class="form-group">
                                 {{ form.password.label(class="form-control-label") }}
                                 {{ form.password(class="form-control form-control-lg") }}
-                                {% for error in form.password.errors %}
-                                    <small class="text-danger">{{ error }}</small>
-                                {% endfor %}
                             </div>
                             <div class="form-group">
                                 {{ form.confirm_password.label(class="form-control-label") }}
                                 {{ form.confirm_password(class="form-control form-control-lg") }}
-                                {% for error in form.confirm_password.errors %}
-                                    <small class="text-danger">{{ error }}</small>
-                                {% endfor %}
+                                <div class="valid-feedback" id="confirm-password-valid">Passwords match.</div>
+                                <div class="invalid-feedback" id="confirm-password-invalid">Passwords do not match.</div>
                             </div>
                             <div class="form-group">
                                 {{ form.submit(class="btn btn-primary btn-lg btn-block") }}
@@ -61,5 +65,64 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registerForm');
+            const password = form.password;
+            const confirmPassword = form.confirm_password;
+            const username = form.username;
+            const email = form.email;
+
+            function validatePassword() {
+                if (password.value === confirmPassword.value) {
+                    document.getElementById('confirm-password-valid').style.display = 'block';
+                    document.getElementById('confirm-password-invalid').style.display = 'none';
+                } else {
+                    document.getElementById('confirm-password-valid').style.display = 'none';
+                    document.getElementById('confirm-password-invalid').style.display = 'block';
+                }
+            }
+
+            function validateUsername() {
+                $.ajax({
+                    url: "{{ url_for('users.check_username') }}",
+                    method: 'POST',
+                    data: { username: username.value },
+                    success: function(data) {
+                        if (data.is_available) {
+                            document.getElementById('username-valid').style.display = 'block';
+                            document.getElementById('username-invalid').style.display = 'none';
+                        } else {
+                            document.getElementById('username-valid').style.display = 'none';
+                            document.getElementById('username-invalid').style.display = 'block';
+                        }
+                    }
+                });
+            }
+
+            function validateEmail() {
+                $.ajax({
+                    url: "{{ url_for('users.check_email') }}",
+                    method: 'POST',
+                    data: { email: email.value },
+                    success: function(data) {
+                        if (data.is_available) {
+                            document.getElementById('email-valid').style.display = 'block';
+                            document.getElementById('email-invalid').style.display = 'none';
+                        } else {
+                            document.getElementById('email-valid').style.display = 'none';
+                            document.getElementById('email-invalid').style.display = 'block';
+                        }
+                    }
+                });
+            }
+
+            password.addEventListener('input', validatePassword);
+            confirmPassword.addEventListener('input', validatePassword);
+            username.addEventListener('input', validateUsername);
+            email.addEventListener('input', validateEmail);
+        });
+    </script>
 </body>
 </html>

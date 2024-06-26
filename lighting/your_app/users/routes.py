@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
 from your_app import db, bcrypt
 from your_app.models import User
 from your_app.users.forms import RegistrationForm, LoginForm
@@ -12,16 +12,10 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        try:
-            db.session.add(user)
-            db.session.commit()
-            current_app.logger.info(f'New user created: {user.username}, {user.email}')
-            flash('Your account has been created! You are now able to log in', 'success')
-            return redirect(url_for('users.login'))
-        except Exception as e:
-            db.session.rollback()
-            current_app.logger.error(f'Error creating user: {e}')
-            flash('An error occurred during registration. Please try again.', 'danger')
+        db.session.add(user)
+        db.session.commit()
+        flash('Your account has been created!', 'success')
+        return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 
 @users.route('/login', methods=['GET', 'POST'])
@@ -43,3 +37,15 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
+
+@users.route('/check_username', methods=['POST'])
+def check_username():
+    username = request.form.get('username')
+    user = User.query.filter_by(username=username).first()
+    return jsonify({'is_available': user is None})
+
+@users.route('/check_email', methods=['POST'])
+def check_email():
+    email = request.form.get('email')
+    user = User.query.filter_by(email=email).first()
+    return jsonify({'is_available': user is None})
