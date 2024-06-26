@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for
 
 main = Blueprint('main', __name__)
 
@@ -9,6 +9,12 @@ def home():
 
 @main.route('/swipe')
 def swipe():
-    # Assuming you have a Light model and you are querying it
     lights = Light.query.all()
     return render_template('swipe.html', lights=lights)
+
+@main.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        # handle file upload here
+        pass
+    return render_template('upload.html')
