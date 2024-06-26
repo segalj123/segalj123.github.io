@@ -20,7 +20,6 @@ def add_initial_data():
     db.session.add(light1)
     db.session.add(light2)
     db.session.add(light3)
-
-    # Commit changes
     db.session.commit()
+
     print("Initial data added successfully.")
