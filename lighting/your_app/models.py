@@ -1,8 +1,8 @@
 from datetime import datetime
 from your_app import db, login_manager
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from flask import current_app
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from itsdangerous import URLSafeTimedSerializer as Serializer
 
 @login_manager.user_loader
 def load_user(user_id):
