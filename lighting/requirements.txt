@@ -5,4 +5,5 @@ Flask-SQLAlchemy==2.5.1
 Flask-WTF==0.15.1
 SQLAlchemy==1.4.41
 email-validator==2.2.0
-gunicorn
+gunicorn==20.1.0
+Werkzeug==2.0.1
