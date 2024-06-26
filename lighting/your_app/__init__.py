@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
-from your_app.config import Config  # Import the config here
+from your_app.config import Config
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
