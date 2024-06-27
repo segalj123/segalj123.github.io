@@ -1,6 +1,6 @@
 # your_app/main/routes.py
 
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template
 from your_app.models import Light
 
 main = Blueprint('main', __name__)

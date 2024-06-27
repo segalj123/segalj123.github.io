@@ -1,15 +1,15 @@
 # your_app/users/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, DecimalField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from your_app.models import User
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = StringField('Password', validators=[DataRequired()])
-    confirm_password = StringField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     user_type = SelectField('User Type', choices=[('designer', 'Designer'), ('contractor', 'Contractor')], validators=[DataRequired()])
     submit = SubmitField('Sign Up')
 
@@ -25,14 +25,14 @@ class RegistrationForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = StringField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-class CategorySelectionForm(FlaskForm):
-    light_type = StringField('Light Type', validators=[DataRequired()])
+class CategoryForm(FlaskForm):
+    light_type = StringField('Type of Light', validators=[DataRequired()])
     bulb_type = StringField('Bulb Type', validators=[DataRequired()])
     color = StringField('Color', validators=[DataRequired()])
-    design_type = SelectField('Design Type', choices=[('farmhouse', 'Farmhouse'), ('contemporary', 'Contemporary'), ('modern', 'Modern')], validators=[DataRequired()])
-    price = DecimalField('Price', validators=[DataRequired()])
+    design_type = StringField('Design Type', validators=[DataRequired()])
+    price = StringField('Price', validators=[DataRequired()])
     submit = SubmitField('Submit')
