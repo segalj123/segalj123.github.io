@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
 from your_app import db, bcrypt
 from your_app.models import User
-from your_app.users.forms import RegistrationForm, LoginForm
+from your_app.users.forms import RegistrationForm, LoginForm, CategorySelectionForm
 from flask_login import login_user, current_user, logout_user
 
 users = Blueprint('users', __name__)
@@ -15,11 +15,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!', 'success')
-        login_user(user)
-        if user.user_type == 'designer':
-            flash('Congratulations on signing up as a designer!', 'success')
-            return redirect(url_for('users.select_categories'))
-        return redirect(url_for('main.home'))
+        return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 
 @users.route('/login', methods=['GET', 'POST'])
@@ -58,5 +54,11 @@ def check_email():
 def select_categories():
     if current_user.is_anonymous or current_user.user_type != 'designer':
         return redirect(url_for('main.home'))
-    # Your form and logic to select categories
-    return render_template('select_categories.html')
+
+    form = CategorySelectionForm()
+    if form.validate_on_submit():
+        # Process the form data here
+        flash('Categories selected successfully!', 'success')
+        return redirect(url_for('main.home'))
+
+    return render_template('select_categories.html', form=form)
