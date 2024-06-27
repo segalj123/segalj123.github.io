@@ -1,5 +1,3 @@
-# your_app/users/routes.py
-
 from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
 from your_app import db, bcrypt
 from your_app.models import User
@@ -19,8 +17,7 @@ def register():
         flash('Your account has been created!', 'success')
         if user.user_type == 'designer':
             return redirect(url_for('users.select_categories'))
-        else:
-            return redirect(url_for('main.home'))
+        return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 
 @users.route('/login', methods=['GET', 'POST'])
@@ -59,6 +56,6 @@ def check_email():
 def select_categories():
     form = CategoryForm()
     if form.validate_on_submit():
-        flash('Categories have been selected!', 'success')
+        # Handle the form submission logic here
         return redirect(url_for('main.swipe'))
     return render_template('select_categories.html', title='Select Categories', form=form)
