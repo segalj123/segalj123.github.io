@@ -1,6 +1,4 @@
-# your_app/main/routes.py
-
-from flask import Blueprint, render_template
+from flask import render_template, Blueprint
 from your_app.models import Light
 
 main = Blueprint('main', __name__)
