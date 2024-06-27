@@ -1,8 +1,9 @@
 from init import create_app, db
-from flask import render_template, redirect, url_for, request, session
+from flask import render_template, redirect, url_for, request, session, send_from_directory
 from forms import RegistrationForm, LoginForm, LightUploadForm
 from models import User, Light
 from utils import validate_username, validate_email, validate_password
+import os
 
 app = create_app()
 
@@ -93,6 +94,10 @@ def builder_likes():
     user = User.query.filter_by(username=session['username']).first()
     liked_lights = Light.query.filter_by(builder_id=user.id).all()
     return render_template('builder_likes.html', liked_lights=liked_lights)
+
+@app.route('/static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path)
 
 if __name__ == '__main__':
     app.run(debug=True)
