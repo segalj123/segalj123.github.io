@@ -15,7 +15,11 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!', 'success')
-        return redirect(url_for('users.login'))
+        login_user(user)
+        if user.user_type == 'designer':
+            flash('Congratulations on signing up as a designer!', 'success')
+            return redirect(url_for('users.select_categories'))
+        return redirect(url_for('main.home'))
     return render_template('register.html', title='Register', form=form)
 
 @users.route('/login', methods=['GET', 'POST'])
@@ -49,3 +53,10 @@ def check_email():
     email = request.form.get('email')
     user = User.query.filter_by(email=email).first()
     return jsonify({'is_available': user is None})
+
+@users.route('/select_categories', methods=['GET', 'POST'])
+def select_categories():
+    if current_user.is_anonymous or current_user.user_type != 'designer':
+        return redirect(url_for('main.home'))
+    # Your form and logic to select categories
+    return render_template('select_categories.html')

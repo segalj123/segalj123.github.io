@@ -2,36 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Criteria</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Select Categories</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
-    <h1>Select Your Criteria</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div>
-            {{ form.category.label }}<br>
-            {{ form.category() }}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mt-5">
+                    <div class="card-header text-center">
+                        <h2>Select Categories</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Please select the categories you are interested in to start swiping through lights.</p>
+                        <form method="POST" action="{{ url_for('users.select_categories') }}">
+                            <!-- Add your categories selection form here -->
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            {{ form.color.label }}<br>
-            {{ form.color() }}
-        </div>
-        <div>
-            {{ form.min_price.label }}<br>
-            {{ form.min_price() }}
-        </div>
-        <div>
-            {{ form.max_price.label }}<br>
-            {{ form.max_price() }}
-        </div>
-        <div>
-            {{ form.min_order_quantity.label }}<br>
-            {{ form.min_order_quantity() }}
-        </div>
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Demo logic here
+            alert('This is a quick demo explaining the process of selecting categories.');
+        });
+    </script>
 </body>
 </html>
