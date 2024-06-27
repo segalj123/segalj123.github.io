@@ -77,33 +77,27 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const demoModal = document.getElementById('demoModal');
-            const closeDemo = document.getElementById('closeDemo');
-            closeDemo.addEventListener('click', function() {
-                demoModal.style.display = 'none';
+        $(document).ready(function() {
+            $('#demoModal').show();
+
+            $('#closeDemo').click(function() {
+                $('#demoModal').hide();
             });
 
-            // Example auto-suggest data
-            const lightTypes = ["Chandelier", "Pendant", "Ceiling Light", "Wall Sconce"];
-            const bulbTypes = ["LED", "Incandescent", "Halogen", "Fluorescent"];
-            const colors = ["Black", "White", "Gold", "Silver", "Bronze"];
+            var lightTypes = ['Pendant', 'Chandelier', 'Ceiling', 'Wall'];
+            var bulbTypes = ['LED', 'Incandescent', 'Fluorescent'];
+            var colors = ['Red', 'Blue', 'Green', 'Yellow', 'White', 'Black'];
 
-            // Auto-suggest for light_type
-            $("input[name='light_type']").autocomplete({
+            $('#{{ form.light_type.id }}').autocomplete({
                 source: lightTypes
             });
 
-            // Auto-suggest for bulb_type
-            $("input[name='bulb_type']").autocomplete({
+            $('#{{ form.bulb_type.id }}').autocomplete({
                 source: bulbTypes
             });
 
-            // Auto-suggest for color
-            $("input[name='color']").autocomplete({
+            $('#{{ form.color.id }}').autocomplete({
                 source: colors
             });
         });

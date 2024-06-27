@@ -1,3 +1,5 @@
+# your_app/users/routes.py
+
 from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
 from your_app import db, bcrypt
 from your_app.models import User
@@ -15,7 +17,10 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created!', 'success')
-        return redirect(url_for('users.login'))
+        if user.user_type == 'designer':
+            return redirect(url_for('users.select_categories'))
+        else:
+            return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
 
 @users.route('/login', methods=['GET', 'POST'])
