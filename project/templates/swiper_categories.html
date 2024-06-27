@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Select Categories</h2>
+    <form method="POST" action="{{ url_for('swiper_lights') }}">
+        <div class="form-group">
+            <label for="finish">Finish</label>
+            <input type="text" name="finish" class="form-control" id="finish">
+        </div>
+        <div class="form-group">
+            <label for="type_of_light">Type of Light</label>
+            <input type="text" name="type_of_light" class="form-control" id="type_of_light">
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" name="price" class="form-control" id="price">
+        </div>
+        <div class="form-group">
+            <label for="color">Color</label>
+            <input type="text" name="color" class="form-control" id="color">
+        </div>
+        <div class="form-group">
+            <label for="height">Height</label>
+            <input type="text" name="height" class="form-control" id="height">
+        </div>
+        <button type="submit" class="btn btn-primary">Find Lights</button>
+    </form>
+</div>
+{% endblock %}

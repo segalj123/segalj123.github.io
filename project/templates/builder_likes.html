@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Lights Liked by Swipers</h2>
+    <!-- Here you would loop through liked lights and display them -->
+    {% for light in liked_lights %}
+    <div class="light-item">
+        <h3>{{ light.name }}</h3>
+        <p>Category: {{ light.category }}</p>
+        <p>Price: {{ light.price }}</p>
+        <p>Color: {{ light.color }}</p>
+        <p>Height: {{ light.height }}</p>
+        <p>Number of likes: {{ light.likes_count }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

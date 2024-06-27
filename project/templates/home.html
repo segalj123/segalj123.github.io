@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Welcome to Light Finder</h1>
+        <p>Your go-to platform for discovering and sourcing the best lighting solutions.</p>
+    </div>
+</section>
+<section class="features">
+    <div class="container">
+        <h2>Why Choose Us</h2>
+        <div class="feature-item">
+            <img src="{{ url_for('static', filename='images/feature1.jpg') }}" alt="Feature 1">
+            <h3>Wide Selection</h3>
+            <p>Discover a variety of lighting options to suit every need.</p>
+        </div>
+        <div class="feature-item">
+            <img src="{{ url_for('static', filename='images/feature2.jpg') }}" alt="Feature 2">
+            <h3>Top Quality</h3>
+            <p>Find lights from trusted builders and suppliers.</p>
+        </div>
+        <div class="feature-item">
+            <img src="{{ url_for('static', filename='images/feature3.jpg') }}" alt="Feature 3">
+            <h3>Easy to Use</h3>
+            <p>Swipe through lights and build your wishlist effortlessly.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
