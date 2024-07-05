@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from forms import LightUploadForm
 
@@ -57,7 +57,7 @@ def swipe_action():
     seen_light = SeenLight(user_id=user_id, light_id=light_id)
     db.session.add(seen_light)
     db.session.commit()
-    return {'status': 'success'}
+    return jsonify({'status': 'success'})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

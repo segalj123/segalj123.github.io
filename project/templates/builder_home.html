@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="container">
-    <h2>Welcome, {{ session['username'] }}</h2>
-    <a href="{{ url_for('builder_upload') }}" class="btn btn-primary">Upload Lights</a>
-    <a href="{{ url_for('builder_likes') }}" class="btn btn-primary">View Liked Lights</a>
-</div>
-{% endblock %}

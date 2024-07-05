@@ -1,8 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="container">
-    <h2>Welcome, {{ session['username'] }}</h2>
-    <a href="{{ url_for('swiper_categories') }}" class="btn btn-primary">Swipe</a>
-</div>
-{% endblock %}

@@ -1,7 +1,0 @@
-Flask
-Flask-WTF
-Flask-SQLAlchemy
-Werkzeug
-gunicorn
-psycopg2-binary
-email-validator
