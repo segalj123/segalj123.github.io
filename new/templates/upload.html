@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Upload Light</h2>
+<form method="POST" enctype="multipart/form-data" action="">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.name.label }}
+        {{ form.name(size=32) }}
+    </div>
+    <div>
+        {{ form.category.label }}
+        {{ form.category(size=32) }}
+    </div>
+    <div>
+        {{ form.image_file.label }}
+        {{ form.image_file() }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}

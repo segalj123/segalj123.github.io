@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Swipe Lights</h2>
+<div id="light-container">
+    {% for light in lights %}
+        <div class="light-card" data-id="{{ light.id }}">
+            <img src="{{ url_for('static', filename='uploads/' + light.image_file) }}" alt="{{ light.name }}">
+            <h3>{{ light.name }}</h3>
+            <p>{{ light.category }}</p>
+            <button class="like-btn" data-action="like">Like</button>
+            <button class="dislike-btn" data-action="dislike">Dislike</button>
+        </div>
+    {% endfor %}
+</div>
+<script src="{{ url_for('static', filename='js/swipe.js') }}"></script>
+{% endblock %}
